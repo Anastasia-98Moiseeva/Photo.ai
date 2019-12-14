@@ -19,7 +19,9 @@
     <string name="errorLoadingPhoto">Error while uploading photo</string>
 
     <string name="amazing">Amazing!</string>
-
-    <string name="share">Share</string>
     <string name="unable_to_upload_photo">Unable to find last uploaded photo</string>
+    <string name="take_a_new_photo">Take a new photo</string>
+    <string name="upload_your_photo">Upload your photo</string>
+    <string name="choose_from_library">Choose from library</string>
+    <string name="get_result">Get result</string>
 </resources>

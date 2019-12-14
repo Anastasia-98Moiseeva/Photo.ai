@@ -55,6 +55,8 @@ class FilterItem : Fragment() {
         val resultButton = view.findViewById<Button>(R.id.btn_result)
         resultButton.setOnClickListener {
             //sendRequest()
+            router.navigateTo(true, ::FilterItemResult,
+                changeStack = 1, transportedMessage = position)
         }
         return view
     }

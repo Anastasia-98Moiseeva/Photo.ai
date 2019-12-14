@@ -10,6 +10,7 @@
         android:id="@+id/btn_filter_item"
         android:layout_width="300dp"
         android:layout_height="300dp"
+        android:layout_margin="20dp"
         android:background="@color/background"/>
 
 </LinearLayout>

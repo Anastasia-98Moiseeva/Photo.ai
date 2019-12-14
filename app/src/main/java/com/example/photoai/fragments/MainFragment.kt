@@ -46,5 +46,7 @@ class MainFragment : Fragment() {
     }
 
     private fun onElementClick(position : Int){
+        router.navigateTo(true, ::FilterItem, true,
+            transportedMessage = position)
     }
 }

@@ -1,22 +1,25 @@
 package com.example.photoai.fragments
 
+import android.app.Activity
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.Toast
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import com.example.photoai.AppConstants
 import com.example.photoai.R
 import com.example.photoai.router.Router
+import com.squareup.picasso.Picasso
 
 
 class FilterItem : Fragment() {
@@ -39,8 +42,6 @@ class FilterItem : Fragment() {
                               savedInstanceState: Bundle?): View? {
 
         val view = inflater.inflate(R.layout.filter_item_layout, container, false)
-        var photo = view?.findViewById<ImageView>(R.id.img_gradient)!!
-        val plusButton = view.findViewById<ImageButton>(R.id.img_btn_plus)
 
         val newPhotoButton = view.findViewById<Button>(R.id.btn_take_photo)
         newPhotoButton.setOnClickListener {
@@ -83,6 +84,38 @@ class FilterItem : Fragment() {
             MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
 
         startActivityForResult(pickImageIntent, AppConstants.PICK_PHOTO_REQUEST)
+    }
+
+
+    fun loadPhoto(context: Context?, fileUri : Uri?, photo : ImageView){
+        Picasso
+            .with(context)
+            .setLoggingEnabled(true)
+
+        Picasso
+            .with(context)
+            .load(fileUri)
+            .into(photo)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        val photo = view?.findViewById<ImageView>(R.id.img_gradient)!!
+        val plusImg = view?.findViewById<ImageButton>(R.id.img_btn_plus)!!
+        val cardView = view?.findViewById<CardView>(R.id.beautifulButton)!!
+
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == AppConstants.PICK_PHOTO_REQUEST) {
+                fileUri = data?.data
+            }
+            photo.setBackgroundColor(Color.TRANSPARENT)
+            plusImg.setAlpha(0f)
+            cardView.cardElevation = 0f
+            cardView.setCardBackgroundColor(resources.getColor(R.color.background))
+            cardView.background.alpha = 0
+            loadPhoto(context, fileUri, photo)
+        } else {
+            super.onActivityResult(requestCode, resultCode, data)
+        }
     }
 }
 

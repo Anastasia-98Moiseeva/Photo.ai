@@ -13,7 +13,6 @@
         android:layout_width="@dimen/zero"
         android:layout_height="@dimen/zero"
         android:layout_margin="@dimen/small_margrin"
-        app:cardBackgroundColor="@android:color/transparent"
         app:cardCornerRadius="@dimen/corner_radius"
         app:layout_constraintBottom_toTopOf="@+id/guideline_btn_level"
         app:layout_constraintDimensionRatio="1:1"

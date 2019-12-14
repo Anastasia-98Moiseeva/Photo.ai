@@ -1,9 +1,25 @@
 <resources>
-    <string name="app_name">Photo.ai</string>
+    <string name="app_name">PHOTO.AI</string>
 
     <string-array name="filters">
         <item>filter1</item>
         <item>filter2</item>
         <item>filter3</item>
     </string-array>
+
+    <string name="uploadPhoto">Upload your photo</string>
+
+    <string name="newPhoto">Take a new photo</string>
+    <string name="chosePhoto">Choose from library</string>
+    <string name="getResult">Get result</string>
+
+    <string name="baseUrl">http://35.164.210.60:8080/</string>
+
+    <string name="needToLoadPhoto">Please load a photo</string>
+    <string name="errorLoadingPhoto">Error while uploading photo</string>
+
+    <string name="amazing">Amazing!</string>
+
+    <string name="share">Share</string>
+    <string name="unable_to_upload_photo">Unable to find last uploaded photo</string>
 </resources>

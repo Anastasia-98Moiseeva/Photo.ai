@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Photo.ai</string>
+
+    <string-array name="filters">
+        <item>filter1</item>
+        <item>filter2</item>
+        <item>filter3</item>
+    </string-array>
+</resources>

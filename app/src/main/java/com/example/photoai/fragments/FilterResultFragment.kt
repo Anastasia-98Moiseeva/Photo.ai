@@ -6,12 +6,14 @@ import android.os.AsyncTask
 import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 
 
 import androidx.fragment.app.Fragment
@@ -55,50 +57,44 @@ class FilterResultFragment : Fragment() {
         val view = inflater.inflate(R.layout.result_img_layout, container, false)
 
         val filterTextView = view.findViewById<TextView>(R.id.txt_result_filter)
-
-        val progressBar = view.findViewById<ProgressBar>(R.id.progress_bar)
-
         val amazingTextView = view.findViewById<TextView>(R.id.text_amazing)
-
+        val progressBar = view.findViewById<ProgressBar>(R.id.progress_bar)
         val photo = view.findViewById<ImageView>(R.id.img_result)
 
         sendRequest()
+
         barrier?.await()
 
-        progressBar.visibility = View.GONE
-        filterTextView.visibility = View.VISIBLE
-        amazingTextView.visibility = View.VISIBLE
-        photo.visibility = View.VISIBLE
-        getPhotoFromServer(progressBar, filterTextView,
-         amazingTextView, photo)
+        getPhotoFromServer(progressBar, filterTextView, amazingTextView, photo)
+
         return view
     }
 
     fun getPhotoFromServer(progressBar: ProgressBar, filterTextView: TextView,
                            amazingTextView: TextView, photo: ImageView) {
 
-        val delayTime = startTime!! + 2000 - System.currentTimeMillis()
+        Picasso.with(context).invalidate(url)
+        val picasso = Picasso.Builder(context)
+            .listener { _, _, e -> e.printStackTrace() }
+            .build()
+        picasso.load(url)
+            .into(photo, object : Callback {
+                @SuppressLint("ShowToast")
+                override fun onError() {
+                    progressBar.setVisibility(View.INVISIBLE)
+                    val toast = Toast.makeText(context,
+                        resources.getString(R.string.errorLoadingPhoto), Toast.LENGTH_LONG)
+                    toast.setGravity(Gravity.CENTER, 0, 0)
+                    toast.show()
+                }
 
-        val handler = Handler()
-        handler.postDelayed({
-                Picasso.with(context).invalidate(url)
-                Picasso.with(context)
-                    .load(url)
-                    .into(photo, object : Callback {
-                        @SuppressLint("ShowToast")
-                        override fun onError() {
-                            /* val toast = Toast.makeText(context,
-                                 resources.getString(R.string.errorLoadingPhoto), Toast.LENGTH_LONG)
-                             toast.setGravity(Gravity.CENTER, 0, 0)
-                             toast.show()*/
-                        }
-
-                        override fun onSuccess() {
-                            setVisibility(progressBar, filterTextView,
-                                amazingTextView, photo)
-                        }
-                    })
-            }, if (delayTime < 0) 0 else delayTime)
+                override fun onSuccess() {
+                    setVisibility(
+                        progressBar, filterTextView,
+                        amazingTextView, photo
+                    )
+                }
+            })
     }
 
     fun setVisibility(progressBar: ProgressBar, filterTextView: TextView,
@@ -118,7 +114,7 @@ class FilterResultFragment : Fragment() {
     fun genFile(): File {
         val fileInputStream : InputStream = activity?.contentResolver!!.openInputStream(this.fileUri)
         val path = Environment.getExternalStorageDirectory()
-        val file : File = File(path, "/" + "newImg.png")
+        val file = File(path, "/" + "newImg.png")
         fileInputStream.toFile(file)
         return file
     }
@@ -132,8 +128,7 @@ class FilterResultFragment : Fragment() {
             activity?.let {
                 res = cloudinary.uploader().unsignedUpload(
                     genFile(),
-                    "unsignedpreset", ObjectUtils.emptyMap()
-                )
+                    "unsignedpreset", ObjectUtils.emptyMap())
             }
             url = (res?.getValue("url")).toString()
             barrier?.await()

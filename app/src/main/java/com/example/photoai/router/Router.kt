@@ -1,5 +1,6 @@
 package com.example.photoai.router
 
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -13,7 +14,7 @@ class Router(activity : FragmentActivity, container: Int) {
 
     fun navigateTo(addToBack : Boolean = true, fragmentNew: () -> Fragment,
                    needAnimation : Boolean = false, changeStack : Int = 0,
-                   transportedMessage: Any? = null) {
+                   intMessage: Int? = null, strMessage: String? = null) {
 
         val activity = weakActivity.get()
 
@@ -27,14 +28,15 @@ class Router(activity : FragmentActivity, container: Int) {
             }
 
             val fragment = fragmentNew()
-            if (transportedMessage != null) {
+            if (intMessage != null) {
                 val args = Bundle()
-                if (transportedMessage is Int) {
-                    args.putInt(com.example.photoai.fragments.message, transportedMessage)
-                }
-                if (transportedMessage is String) {
-                    args.putString(com.example.photoai.fragments.message, transportedMessage)
-                }
+                args.putInt(com.example.photoai.fragments.intMessage, intMessage)
+                fragment.arguments = args
+            }
+
+            if (strMessage != null) {
+                val args = Bundle()
+                args.putString(com.example.photoai.fragments.strMessage, strMessage)
                 fragment.arguments = args
             }
 

@@ -11,7 +11,8 @@ import com.example.photoai.R
 import com.example.photoai.router.Router
 import com.example.test.adapters.ListAdapter
 
-val message = "message"
+val intMessage = "intMessage"
+val strMessage = "strMessage"
 
 class FilterListFragment : Fragment() {
 
@@ -47,6 +48,6 @@ class FilterListFragment : Fragment() {
 
     private fun onElementClick(position : Int){
         router.navigateTo(true, ::FilterItemFragment, true,
-            transportedMessage = position)
+            intMessage = position)
     }
 }

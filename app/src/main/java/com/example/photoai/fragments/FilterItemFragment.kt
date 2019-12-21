@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
-import android.os.AsyncTask
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
@@ -17,12 +16,10 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
-import com.cloudinary.Cloudinary
 import com.example.photoai.AppConstants
 import com.example.photoai.R
 import com.example.photoai.router.Router
 import com.squareup.picasso.Picasso
-import com.cloudinary.utils.ObjectUtils
 
 
 class FilterItemFragment : Fragment() {
@@ -33,10 +30,12 @@ class FilterItemFragment : Fragment() {
 
     private var fileUri: Uri? = null
 
+    //private var  URL = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        position = this.arguments!!.getInt(message)
+        position = this.arguments!!.getInt(intMessage)
         router = Router(requireActivity(), R.id.fragment_container)
     }
 
@@ -58,9 +57,8 @@ class FilterItemFragment : Fragment() {
 
         val resultButton = view.findViewById<Button>(R.id.btn_result)
         resultButton.setOnClickListener {
-            val res = sendRequest()
             router.navigateTo(true, ::FilterResultFragment,
-                changeStack = 1, transportedMessage = position.toString() + "***" + res)
+                changeStack = 1, intMessage = position, strMessage = fileUri.toString())
         }
         return view
     }
@@ -121,17 +119,35 @@ class FilterItemFragment : Fragment() {
         }
     }
 
-    fun sendRequest() : Any? {
+   /* fun InputStream.toFile(file: File) {
+        file.outputStream().use { this.copyTo(it) }
+    }
+
+    fun genFile(): File {
+        val fileInputStream : InputStream = activity?.contentResolver!!.openInputStream(this.fileUri)
+        val path = Environment.getExternalStorageDirectory()
+        val file : File = File(path, "/" + "newImg.png")
+        fileInputStream.toFile(file)
+        return file
+    }
+
+    fun sendRequest() {
         var res : MutableMap<Any?, Any?>? = null
         doAsync {
             val config = HashMap<String, String>()
             config.put("cloud_name", "dbovyb11z")
             val cloudinary = Cloudinary(config)
-            res = cloudinary.uploader().unsignedUpload(
-                "https://indicator.ru/thumb/640x0/filters:quality(75)/imgs/2019/08/05/10/3489638/19e9fc77f9acba1ed7d73ba45a8776abb4903566.jpg",
-                "unsignedpreset", ObjectUtils.emptyMap())
+            activity?.let {
+                //"http://www.hqwallpapers.ru/wallpapers/animals/klassicheskaya-belka.jpg",
+                res = cloudinary.uploader().unsignedUpload(
+                    genFile(),
+                    "unsignedpreset", ObjectUtils.emptyMap()
+                )
+            }
+            URL = (res?.getValue("url")).toString()
+            //TimeUnit.SECONDS.sleep(3)
         }.execute()
-        return res?.get("url")
+        val i = 3
     }
 
     class doAsync(val handler: () -> Unit) : AsyncTask<Void, Void, Void>() {
@@ -139,6 +155,6 @@ class FilterItemFragment : Fragment() {
             handler()
             return null
         }
-    }
+    }*/
 }
 

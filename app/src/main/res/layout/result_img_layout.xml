@@ -8,31 +8,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/beautifulButton"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_margin="8dp"
-        app:cardBackgroundColor="@android:color/transparent"
-        app:cardCornerRadius="10dp"
+    <ImageView
+        android:id="@+id/img_result"
+        android:layout_width="@dimen/zero"
+        android:layout_height="@dimen/zero"
+        android:layout_margin="@dimen/small_margrin"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintBottom_toTopOf="@+id/guideline_btn_level"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right_part_of_square"
         app:layout_constraintStart_toStartOf="@+id/guideline_left_part_of_square"
-        app:layout_constraintTop_toTopOf="@+id/guideline_upload_level">
-
-        <ImageView
-            android:id="@+id/img_result"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.511" />
-
-    </androidx.cardview.widget.CardView>
+        app:layout_constraintTop_toTopOf="@+id/guideline_upload_level"/>
 
     <TextView
         android:id="@+id/text_amazing"

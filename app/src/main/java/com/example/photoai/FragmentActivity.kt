@@ -9,7 +9,7 @@ import com.example.photoai.fragments.FilterListFragment
 import com.example.photoai.router.Router
 
 
-class MainFragment : AppCompatActivity() {
+class FragmentActivity : AppCompatActivity() {
 
     lateinit var router  : Router
 

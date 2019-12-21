@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.example.photoai.R
-import com.example.photoai.fragments.message
 import java.lang.ref.WeakReference
 
 class Router(activity : FragmentActivity, container: Int) {
@@ -31,10 +30,10 @@ class Router(activity : FragmentActivity, container: Int) {
             if (transportedMessage != null) {
                 val args = Bundle()
                 if (transportedMessage is Int) {
-                    args.putInt(message, transportedMessage)
+                    args.putInt(com.example.photoai.fragments.message, transportedMessage)
                 }
                 if (transportedMessage is String) {
-                    args.putString(message, transportedMessage)
+                    args.putString(com.example.photoai.fragments.message, transportedMessage)
                 }
                 fragment.arguments = args
             }

@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         Handler().postDelayed({
-            val intent = Intent(this@MainActivity, FragmentActivity::class.java)
+            val intent = Intent(this@MainActivity, MainFragment::class.java)
             startActivity(intent)
             finish()
         }, LOADING_TIME.toLong())

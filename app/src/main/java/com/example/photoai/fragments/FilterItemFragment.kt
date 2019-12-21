@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
+import android.os.AsyncTask
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
@@ -16,13 +17,15 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
+import com.cloudinary.Cloudinary
 import com.example.photoai.AppConstants
 import com.example.photoai.R
 import com.example.photoai.router.Router
 import com.squareup.picasso.Picasso
+import com.cloudinary.utils.ObjectUtils
 
 
-class FilterItem : Fragment() {
+class FilterItemFragment : Fragment() {
 
     private lateinit var router : Router
 
@@ -55,9 +58,9 @@ class FilterItem : Fragment() {
 
         val resultButton = view.findViewById<Button>(R.id.btn_result)
         resultButton.setOnClickListener {
-            //sendRequest()
-            router.navigateTo(true, ::FilterItemResult,
-                changeStack = 1, transportedMessage = position)
+            val res = sendRequest()
+            router.navigateTo(true, ::FilterResultFragment,
+                changeStack = 1, transportedMessage = position.toString() + "***" + res)
         }
         return view
     }
@@ -115,6 +118,26 @@ class FilterItem : Fragment() {
             loadPhoto(context, fileUri, photo)
         } else {
             super.onActivityResult(requestCode, resultCode, data)
+        }
+    }
+
+    fun sendRequest() : Any? {
+        var res : MutableMap<Any?, Any?>? = null
+        doAsync {
+            val config = HashMap<String, String>()
+            config.put("cloud_name", "dbovyb11z")
+            val cloudinary = Cloudinary(config)
+            res = cloudinary.uploader().unsignedUpload(
+                "https://indicator.ru/thumb/640x0/filters:quality(75)/imgs/2019/08/05/10/3489638/19e9fc77f9acba1ed7d73ba45a8776abb4903566.jpg",
+                "unsignedpreset", ObjectUtils.emptyMap())
+        }.execute()
+        return res?.get("url")
+    }
+
+    class doAsync(val handler: () -> Unit) : AsyncTask<Void, Void, Void>() {
+        override fun doInBackground(vararg params: Void?): Void? {
+            handler()
+            return null
         }
     }
 }

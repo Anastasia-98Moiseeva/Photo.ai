@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import com.example.photoai.R
 
 
-class FilterItemResult : Fragment() {
+class FilterResultFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {

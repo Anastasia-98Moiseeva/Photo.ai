@@ -11,9 +11,9 @@ import com.example.photoai.R
 import com.example.photoai.router.Router
 import com.example.test.adapters.ListAdapter
 
-val message = "mes"
+val message = "message"
 
-class MainFragment : Fragment() {
+class FilterListFragment : Fragment() {
 
     val arrayOfImages : Array<Int> = arrayOf(
         R.drawable.logo,
@@ -46,7 +46,7 @@ class MainFragment : Fragment() {
     }
 
     private fun onElementClick(position : Int){
-        router.navigateTo(true, ::FilterItem, true,
+        router.navigateTo(true, ::FilterItemFragment, true,
             transportedMessage = position)
     }
 }

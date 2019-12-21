@@ -5,11 +5,11 @@ import android.graphics.Shader
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.example.photoai.fragments.MainFragment
+import com.example.photoai.fragments.FilterListFragment
 import com.example.photoai.router.Router
 
 
-class FragmentActivity : AppCompatActivity() {
+class MainFragment : AppCompatActivity() {
 
     lateinit var router  : Router
 
@@ -21,7 +21,7 @@ class FragmentActivity : AppCompatActivity() {
 
         router = Router(this, R.id.fragment_container)
 
-        if (savedInstanceState == null) router.navigateTo(false, ::MainFragment)
+        if (savedInstanceState == null) router.navigateTo(false, ::FilterListFragment)
     }
 
     fun createToolBar(){

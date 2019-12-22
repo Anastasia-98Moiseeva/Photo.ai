@@ -5,7 +5,6 @@ import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
 import android.os.Environment
-import android.os.Handler
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -40,8 +39,6 @@ class FilterResultFragment : Fragment() {
     private var position = 1
     private var fileUri : Uri? = null
 
-    private var startTime : Long? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -64,20 +61,25 @@ class FilterResultFragment : Fragment() {
         sendRequest()
 
         barrier?.await()
-
-        getPhotoFromServer(progressBar, filterTextView, amazingTextView, photo)
+        reCreateURL()
+        getResultPhoto(progressBar, filterTextView, amazingTextView, photo)
 
         return view
     }
 
-    fun getPhotoFromServer(progressBar: ProgressBar, filterTextView: TextView,
-                           amazingTextView: TextView, photo: ImageView) {
+    fun reCreateURL(){
+        val urlParts = url.split("upload/")
+        url = urlParts[0] + "upload/" +
+                resources.getStringArray(R.array.filters)[position] +
+                "/" + urlParts[1]
+    }
+
+    fun getResultPhoto(progressBar: ProgressBar, filterTextView: TextView,
+                       amazingTextView: TextView, photo: ImageView) {
 
         Picasso.with(context).invalidate(url)
-        val picasso = Picasso.Builder(context)
-            .listener { _, _, e -> e.printStackTrace() }
-            .build()
-        picasso.load(url)
+        Picasso.with(context)
+            .load(url)
             .into(photo, object : Callback {
                 @SuppressLint("ShowToast")
                 override fun onError() {
@@ -106,7 +108,6 @@ class FilterResultFragment : Fragment() {
     }
 
 
-
     fun InputStream.toFile(file: File) {
         file.outputStream().use { this.copyTo(it) }
     }
@@ -114,28 +115,27 @@ class FilterResultFragment : Fragment() {
     fun genFile(): File {
         val fileInputStream : InputStream = activity?.contentResolver!!.openInputStream(this.fileUri)
         val path = Environment.getExternalStorageDirectory()
-        val file = File(path, "/" + "newImg.png")
+        val file = File(path, getString(R.string.new_img_name))
         fileInputStream.toFile(file)
         return file
     }
 
     fun sendRequest() {
         var res : MutableMap<Any?, Any?>? = null
-        doAsync {
+        DoAsync {
             val config = HashMap<String, String>()
-            config.put("cloud_name", "dbovyb11z")
+            config.put(getString(R.string.cloud_name), getString(R.string.cloud_name_value))
             val cloudinary = Cloudinary(config)
             activity?.let {
-                res = cloudinary.uploader().unsignedUpload(
-                    genFile(),
-                    "unsignedpreset", ObjectUtils.emptyMap())
+                res = cloudinary.uploader().unsignedUpload(genFile(),
+                    getString(R.string.preset_value), ObjectUtils.emptyMap())
             }
-            url = (res?.getValue("url")).toString()
+            url = (res?.getValue(getString(R.string.url_key))).toString()
             barrier?.await()
         }.execute()
     }
 
-    class doAsync(val handler: () -> Unit) : AsyncTask<Void, Void, Void>() {
+    class DoAsync(val handler: () -> Unit) : AsyncTask<Void, Void, Void>() {
         override fun doInBackground(vararg params: Void?): Void? {
             handler()
             return null

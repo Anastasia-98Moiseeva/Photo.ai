@@ -5,7 +5,6 @@ import android.Manifest
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -18,20 +17,6 @@ class MainActivity : AppCompatActivity() {
 
     val REQUEST_ID_MULTIPLE_PERMISSIONS = 1
     private val LOADING_TIME = 2000
-
-    /*private val LOADING_TIME = 2000
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        Handler().postDelayed({
-            val intent = Intent(this@MainActivity, MainFragment::class.java)
-            startActivity(intent)
-            finish()
-        }, LOADING_TIME.toLong())
-    }*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -78,62 +63,56 @@ class MainActivity : AppCompatActivity() {
 
             val perms = HashMap<String, Int>()
             perms[Manifest.permission.CAMERA] = PackageManager.PERMISSION_GRANTED
-            perms[Manifest.permission.WRITE_EXTERNAL_STORAGE] =
-                PackageManager.PERMISSION_GRANTED
+            perms[Manifest.permission.WRITE_EXTERNAL_STORAGE] = PackageManager.PERMISSION_GRANTED
 
-            for (i in permissions.indices)
+            for (i in permissions.indices) {
                 perms[permissions[i]] = grantResults[i]
+            }
+
             if (perms[Manifest.permission.CAMERA] == PackageManager.PERMISSION_GRANTED
                 && perms[Manifest.permission.WRITE_EXTERNAL_STORAGE] == PackageManager.PERMISSION_GRANTED) {
                 val i = Intent(this@MainActivity, FragmentActivity::class.java)
                 startActivity(i)
                 finish()
-            } else {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(
-                        this,
-                        Manifest.permission.CAMERA)
-                    || ActivityCompat.shouldShowRequestPermissionRationale(
-                        this,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-
-                    showDialogOK("Service Permissions are required for this app",
-                        DialogInterface.OnClickListener { dialog, which ->
-                            when (which) {
-                                DialogInterface.BUTTON_POSITIVE -> checkAndRequestPermissions()
-                                DialogInterface.BUTTON_NEGATIVE -> finish()
-                            }
-                        })
-                } else {
-                    explain("You need to give some mandatory permissions to continue. Do you want to go to app settings?")
-                }
             }
-
+            else {
+                askPermitionsSecondTime()
+            }
         }
-
-
     }
 
-    private fun showDialogOK(message: String, okListener: DialogInterface.OnClickListener) {
+    private fun askPermitionsSecondTime(){
+        if (ActivityCompat.shouldShowRequestPermissionRationale(
+                this, Manifest.permission.CAMERA)
+            || ActivityCompat.shouldShowRequestPermissionRationale(
+                this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+
+            showDialogForProperlyWork(getString(R.string.permission_to_work_properly),
+                DialogInterface.OnClickListener { dialog, which ->
+                    when (which) {
+                        DialogInterface.BUTTON_POSITIVE -> checkAndRequestPermissions()
+                        DialogInterface.BUTTON_NEGATIVE -> finish()
+                    }
+                })
+        } else {
+            showDialogToContinue(getString(R.string.permission_to_continue))
+        }
+    }
+
+    private fun showDialogForProperlyWork(message: String, okListener: DialogInterface.OnClickListener) {
         AlertDialog.Builder(this)
             .setMessage(message)
-            .setPositiveButton("OK", okListener)
-            .setNegativeButton("Cancel", okListener)
+            .setPositiveButton(getString(R.string.ok), okListener)
+            .setNegativeButton(getString(R.string.cancel), okListener)
             .create()
             .show()
     }
 
-    private fun explain(msg: String) {
-        val dialog = AlertDialog.Builder(this)
-        dialog.setMessage(msg)
-            .setPositiveButton("Yes") { paramDialogInterface, paramInt ->
-                startActivity(
-                    Intent(
-                        android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                        Uri.parse("package:com.example.parsaniahardik.kotlin_marshmallowpermission")
-                    )
-                )
-            }
-            .setNegativeButton("Cancel") { paramDialogInterface, paramInt -> finish() }
-        dialog.show()
+    private fun showDialogToContinue(msg: String) {
+        AlertDialog.Builder(this)
+            .setMessage(msg)
+            .setPositiveButton(R.string.ok) { paramDialogInterface, paramInt -> finish()}
+            .setNegativeButton(R.string.cancel) { paramDialogInterface, paramInt -> finish() }
+            .show()
     }
 }

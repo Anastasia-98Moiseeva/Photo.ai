@@ -30,8 +30,6 @@ class FilterItemFragment : Fragment() {
 
     private var fileUri: Uri? = null
 
-    //private var  URL = ""
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -67,14 +65,11 @@ class FilterItemFragment : Fragment() {
         val values = ContentValues(1)
         values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpg")
         fileUri = getActivity()!!.getContentResolver()
-            .insert(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                values)
+            .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         if(intent.resolveActivity(getActivity()!!.getPackageManager()) != null) {
             intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri)
-            intent.addFlags(
-                Intent.FLAG_GRANT_READ_URI_PERMISSION
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION
                         or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
             startActivityForResult(intent, AppConstants.TAKE_PHOTO_REQUEST)
         }
@@ -118,43 +113,5 @@ class FilterItemFragment : Fragment() {
             super.onActivityResult(requestCode, resultCode, data)
         }
     }
-
-   /* fun InputStream.toFile(file: File) {
-        file.outputStream().use { this.copyTo(it) }
-    }
-
-    fun genFile(): File {
-        val fileInputStream : InputStream = activity?.contentResolver!!.openInputStream(this.fileUri)
-        val path = Environment.getExternalStorageDirectory()
-        val file : File = File(path, "/" + "newImg.png")
-        fileInputStream.toFile(file)
-        return file
-    }
-
-    fun sendRequest() {
-        var res : MutableMap<Any?, Any?>? = null
-        doAsync {
-            val config = HashMap<String, String>()
-            config.put("cloud_name", "dbovyb11z")
-            val cloudinary = Cloudinary(config)
-            activity?.let {
-                //"http://www.hqwallpapers.ru/wallpapers/animals/klassicheskaya-belka.jpg",
-                res = cloudinary.uploader().unsignedUpload(
-                    genFile(),
-                    "unsignedpreset", ObjectUtils.emptyMap()
-                )
-            }
-            URL = (res?.getValue("url")).toString()
-            //TimeUnit.SECONDS.sleep(3)
-        }.execute()
-        val i = 3
-    }
-
-    class doAsync(val handler: () -> Unit) : AsyncTask<Void, Void, Void>() {
-        override fun doInBackground(vararg params: Void?): Void? {
-            handler()
-            return null
-        }
-    }*/
 }
 

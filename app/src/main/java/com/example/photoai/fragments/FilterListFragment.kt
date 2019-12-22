@@ -19,6 +19,11 @@ class FilterListFragment : Fragment() {
     val arrayOfImages : Array<Int> = arrayOf(
         R.drawable.logo,
         R.drawable.logo,
+        R.drawable.logo,
+        R.drawable.logo,
+        R.drawable.logo,
+        R.drawable.logo,
+        R.drawable.logo,
         R.drawable.logo)
 
     private lateinit var router : Router

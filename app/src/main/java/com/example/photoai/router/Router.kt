@@ -1,6 +1,5 @@
 package com.example.photoai.router
 
-import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -28,17 +27,14 @@ class Router(activity : FragmentActivity, container: Int) {
             }
 
             val fragment = fragmentNew()
+            val args = Bundle()
             if (intMessage != null) {
-                val args = Bundle()
                 args.putInt(com.example.photoai.fragments.intMessage, intMessage)
-                fragment.arguments = args
             }
-
             if (strMessage != null) {
-                val args = Bundle()
                 args.putString(com.example.photoai.fragments.strMessage, strMessage)
-                fragment.arguments = args
             }
+            fragment.arguments = args
 
             val transaction = supportFragmentManager.beginTransaction()
             if (needAnimation) {

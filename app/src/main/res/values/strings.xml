@@ -1,12 +1,6 @@
 <resources>
     <string name="app_name">PHOTO.AI</string>
 
-    <string-array name="filters">
-        <item>filter1</item>
-        <item>filter2</item>
-        <item>filter3</item>
-    </string-array>
-
     <string name="uploadPhoto">Upload your photo</string>
 
     <string name="newPhoto">Take a new photo</string>
@@ -24,4 +18,24 @@
     <string name="upload_your_photo">Upload your photo</string>
     <string name="choose_from_library">Choose from library</string>
     <string name="get_result">Get result</string>
+    <string name="cloud_name">cloud_name</string>
+    <string name="cloud_name_value">dbovyb11z</string>
+    <string name="preset_value">unsignedpreset</string>
+    <string name="url_key">url</string>
+    <string name="new_img_name">/newImg.png</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="permission_to_work_properly">This application needs permissions to work properly</string>
+    <string name="permission_to_continue">You need to give some mandatory permissions.</string>
+
+    <string-array name="filters">
+        <item>e_art:audrey</item>
+        <item>e_art:fes</item>
+        <item>e_art:refresh</item>
+        <item>e_art:red_rock</item>
+        <item>e_art:zorro</item>
+        <item>e_art:al_dente</item>
+        <item>e_art:frost</item>
+        <item>e_art:sizzle</item>
+    </string-array>
 </resources>

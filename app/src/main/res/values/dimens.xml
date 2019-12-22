@@ -2,7 +2,7 @@
 <resources>
     <dimen name="zero">0dp</dimen>
     <dimen name="small_margrin">8dp</dimen>
-    <dimen name="filter_btn_size">300dp</dimen>
+    <dimen name="filter_btn_size">250dp</dimen>
     <dimen name="medium_margin">20dp</dimen>
     <dimen name="corner_radius">10dp</dimen>
     <dimen name="btn_width">140dp</dimen>

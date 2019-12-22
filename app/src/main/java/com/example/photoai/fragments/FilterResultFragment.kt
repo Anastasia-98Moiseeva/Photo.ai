@@ -55,7 +55,6 @@ class FilterResultFragment : Fragment() {
 
         val filterTextView = view.findViewById<TextView>(R.id.txt_result_filter)
         filterTextView.setText(resources.getStringArray(R.array.filter_titles)[position])
-
         val amazingTextView = view.findViewById<TextView>(R.id.text_amazing)
         val progressBar = view.findViewById<ProgressBar>(R.id.progress_bar)
         val photo = view.findViewById<ImageView>(R.id.img_result)

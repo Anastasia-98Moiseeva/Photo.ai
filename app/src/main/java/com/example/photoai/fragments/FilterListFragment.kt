@@ -17,14 +17,14 @@ val strMessage = "strMessage"
 class FilterListFragment : Fragment() {
 
     val arrayOfImages : Array<Int> = arrayOf(
-        R.drawable.logo,
-        R.drawable.logo,
-        R.drawable.logo,
-        R.drawable.logo,
-        R.drawable.logo,
-        R.drawable.logo,
-        R.drawable.logo,
-        R.drawable.logo)
+        R.drawable.audrey,
+        R.drawable.fes,
+        R.drawable.refresh,
+        R.drawable.red_rock,
+        R.drawable.zorro,
+        R.drawable.al_dente,
+        R.drawable.frost,
+        R.drawable.sizzle)
 
     private lateinit var router : Router
 
@@ -39,7 +39,7 @@ class FilterListFragment : Fragment() {
         val buttons : RecyclerView = layout.run { findViewById(R.id.recycler_list) }
 
         buttons.layoutManager = LinearLayoutManager(
-            inflater.context, RecyclerView.VERTICAL, false) as RecyclerView.LayoutManager?
+            inflater.context, RecyclerView.VERTICAL, false)
 
         buttons.adapter =
             ListAdapter(createElements(), arrayOfImages, ::onElementClick)

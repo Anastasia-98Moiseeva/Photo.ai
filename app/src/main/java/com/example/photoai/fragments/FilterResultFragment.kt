@@ -54,6 +54,8 @@ class FilterResultFragment : Fragment() {
         val view = inflater.inflate(R.layout.result_img_layout, container, false)
 
         val filterTextView = view.findViewById<TextView>(R.id.txt_result_filter)
+        filterTextView.setText(resources.getStringArray(R.array.filter_titles)[position])
+
         val amazingTextView = view.findViewById<TextView>(R.id.text_amazing)
         val progressBar = view.findViewById<ProgressBar>(R.id.progress_bar)
         val photo = view.findViewById<ImageView>(R.id.img_result)
@@ -68,8 +70,8 @@ class FilterResultFragment : Fragment() {
     }
 
     fun reCreateURL(){
-        val urlParts = url.split("upload/")
-        url = urlParts[0] + "upload/" +
+        val urlParts = url.split(getString(R.string.upload_url_part))
+        url = urlParts[0] + getString(R.string.upload_url_part) +
                 resources.getStringArray(R.array.filters)[position] +
                 "/" + urlParts[1]
     }

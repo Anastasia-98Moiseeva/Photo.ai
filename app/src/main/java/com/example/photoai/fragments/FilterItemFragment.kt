@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import com.example.photoai.AppConstants
@@ -42,6 +43,9 @@ class FilterItemFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
 
         val view = inflater.inflate(R.layout.filter_item_layout, container, false)
+
+        val filterTitle = view.findViewById<TextView>(R.id.txt_filter_title)
+        filterTitle.setText(resources.getStringArray(R.array.filter_titles)[position])
 
         val newPhotoButton = view.findViewById<Button>(R.id.btn_take_photo)
         newPhotoButton.setOnClickListener {

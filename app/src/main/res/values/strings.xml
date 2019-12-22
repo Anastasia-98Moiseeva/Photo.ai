@@ -27,6 +27,7 @@
     <string name="cancel">Cancel</string>
     <string name="permission_to_work_properly">This application needs permissions to work properly</string>
     <string name="permission_to_continue">You need to give some mandatory permissions.</string>
+    <string name="upload_url_part">upload/</string>
 
     <string-array name="filters">
         <item>e_art:audrey</item>
@@ -37,5 +38,16 @@
         <item>e_art:al_dente</item>
         <item>e_art:frost</item>
         <item>e_art:sizzle</item>
+    </string-array>
+
+    <string-array name="filter_titles">
+        <item>Audrey</item>
+        <item>Fes</item>
+        <item>Refresh</item>
+        <item>Red_rock</item>
+        <item>Zorro</item>
+        <item>Al_dente</item>
+        <item>Frost</item>
+        <item>Sizzle</item>
     </string-array>
 </resources>

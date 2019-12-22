@@ -54,16 +54,16 @@
         android:id="@+id/btn_result"
         android:layout_width="@dimen/btn_width"
         android:layout_height="@dimen/btn_height"
-        android:layout_marginTop="@dimen/medium_margin"
+        android:layout_marginTop="40dp"
         android:background="@drawable/button_style"
+        android:elevation="@dimen/evaluation"
         android:fontFamily="@font/montserrat"
         android:lineHeight="12.19sp"
+        android:stateListAnimator="@null"
         android:text="@string/get_result"
         android:textColor="@drawable/text_on_button_style"
         android:textSize="@dimen/btn_txt_size"
         android:textStyle="bold"
-        android:elevation="@dimen/evaluation"
-        android:stateListAnimator="@null"
         android:translationZ="@dimen/btn_translation"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintHorizontal_bias="0.489"
@@ -186,13 +186,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.85" />
+        app:layout_constraintGuide_percent="0.9" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_left_part_of_square"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.15" />
+        app:layout_constraintGuide_percent="0.1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

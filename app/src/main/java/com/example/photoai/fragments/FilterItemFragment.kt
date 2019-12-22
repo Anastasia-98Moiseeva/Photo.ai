@@ -8,13 +8,11 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import com.example.photoai.AppConstants
@@ -59,10 +57,22 @@ class FilterItemFragment : Fragment() {
 
         val resultButton = view.findViewById<Button>(R.id.btn_result)
         resultButton.setOnClickListener {
-            router.navigateTo(true, ::FilterResultFragment,
-                changeStack = 1, intMessage = position, strMessage = fileUri.toString())
+            getResult()
         }
         return view
+    }
+
+    private fun getResult(){
+        val plusImg = view?.findViewById<ImageButton>(R.id.img_btn_plus)
+        if (plusImg?.alpha == 0.0f) {
+            router.navigateTo(true, ::FilterResultFragment,
+                changeStack = 1, intMessage = position, strMessage = fileUri.toString())
+        } else {
+            val toast = Toast.makeText(context,
+                resources.getString(R.string.needToLoadPhoto), Toast.LENGTH_LONG)
+            toast.setGravity(Gravity.CENTER, 0, 0)
+            toast.show()
+        }
     }
 
     private fun makeNewPhoto() {

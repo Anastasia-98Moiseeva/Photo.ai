@@ -7,8 +7,6 @@
     <string name="chosePhoto">Choose from library</string>
     <string name="getResult">Get result</string>
 
-    <string name="baseUrl">http://35.164.210.60:8080/</string>
-
     <string name="needToLoadPhoto">Please load a photo</string>
     <string name="errorLoadingPhoto">Error while uploading photo</string>
 

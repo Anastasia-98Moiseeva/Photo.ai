@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center_horizontal"
     android:padding="@dimen/zero">
 
-    <ImageButton
-        android:id="@+id/btn_filter_item"
-        android:layout_width="@dimen/filter_btn_size"
-        android:layout_height="@dimen/filter_btn_size"
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_margin="@dimen/medium_margin"
-        android:text="Audrey"
-        android:background="@color/background"/>
+        app:cardCornerRadius="@dimen/corner_radius">
+
+        <ImageButton
+            android:id="@+id/btn_filter_item"
+            android:layout_width="@dimen/filter_btn_size"
+            android:layout_height="@dimen/filter_btn_size"
+            android:text="Audrey"
+            android:background="@color/background"/>
+    </androidx.cardview.widget.CardView>
 
 </LinearLayout>

@@ -26,6 +26,7 @@
     <string name="permission_to_work_properly">This application needs permissions to work properly</string>
     <string name="permission_to_continue">You need to give some mandatory permissions.</string>
     <string name="upload_url_part">upload/</string>
+    <string name="share">Share</string>
 
     <string-array name="filters">
         <item>e_art:audrey</item>

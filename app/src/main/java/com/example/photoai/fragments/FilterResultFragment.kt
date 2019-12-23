@@ -9,10 +9,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 
 
 import androidx.fragment.app.Fragment
@@ -25,6 +22,7 @@ import com.squareup.picasso.Picasso
 import java.io.File
 import java.io.InputStream
 import java.util.concurrent.CyclicBarrier
+import android.content.Intent
 
 
 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
@@ -59,13 +57,25 @@ class FilterResultFragment : Fragment() {
         val progressBar = view.findViewById<ProgressBar>(R.id.progress_bar)
         val photo = view.findViewById<ImageView>(R.id.img_result)
 
+        val share = view.findViewById<Button>(R.id.btn_share)
+        share.setOnClickListener {
+            shareResult()
+        }
+
         sendRequest()
 
         barrier?.await()
         reCreateURL()
-        getResultPhoto(progressBar, filterTextView, amazingTextView, photo)
+        getResultPhoto(progressBar, filterTextView, amazingTextView, photo, share)
 
         return view
+    }
+
+    fun shareResult(){
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.type = "plain/text"
+        intent.putExtra(Intent.EXTRA_TEXT, url)
+        startActivity(Intent.createChooser(intent, getString(R.string.share)))
     }
 
     fun reCreateURL(){
@@ -76,7 +86,7 @@ class FilterResultFragment : Fragment() {
     }
 
     fun getResultPhoto(progressBar: ProgressBar, filterTextView: TextView,
-                       amazingTextView: TextView, photo: ImageView) {
+                       amazingTextView: TextView, photo: ImageView, share : Button) {
 
         Picasso.with(context).invalidate(url)
         Picasso.with(context)
@@ -94,18 +104,20 @@ class FilterResultFragment : Fragment() {
                 override fun onSuccess() {
                     setVisibility(
                         progressBar, filterTextView,
-                        amazingTextView, photo
+                        amazingTextView, photo, share
                     )
                 }
             })
     }
 
     fun setVisibility(progressBar: ProgressBar, filterTextView: TextView,
-                      amazingTextView: TextView, photo: ImageView){
+                      amazingTextView: TextView, photo: ImageView, share : Button){
         progressBar.setVisibility(View.INVISIBLE)
         filterTextView.setVisibility(View.VISIBLE)
         amazingTextView.setVisibility(View.VISIBLE)
         photo.setVisibility(View.VISIBLE)
+        share.isEnabled = true
+        share.visibility = View.VISIBLE
     }
 
 

@@ -9,11 +9,12 @@
     <dimen name="btn_height">32dp</dimen>
     <dimen name="btn_corner_radius">20dp</dimen>
     <dimen name="stroke_width">1dp</dimen>
-    <dimen name="title_size">14sp</dimen>
+    <dimen name="title_size">18sp</dimen>
     <dimen name="translation">20dp</dimen>
     <dimen name="extra_space">5sp</dimen>
     <dimen name="btn_txt_size">10sp</dimen>
     <dimen name="evaluation">3dp</dimen>
     <dimen name="btn_translation">2dp</dimen>
     <dimen name="large_margin">30dp</dimen>
+    <dimen name="filter_name_size">36sp</dimen>
 </resources>

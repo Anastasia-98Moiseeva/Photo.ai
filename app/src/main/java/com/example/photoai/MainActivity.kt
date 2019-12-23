@@ -11,6 +11,8 @@ import android.os.Handler
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+import android.net.Uri
 
 
 class MainActivity : AppCompatActivity() {
@@ -87,7 +89,7 @@ class MainActivity : AppCompatActivity() {
             || ActivityCompat.shouldShowRequestPermissionRationale(
                 this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
 
-            showDialogForProperlyWork(getString(R.string.permission_to_work_properly),
+            warnAboutPermissions(getString(R.string.permission_to_work_properly),
                 DialogInterface.OnClickListener { dialog, which ->
                     when (which) {
                         DialogInterface.BUTTON_POSITIVE -> checkAndRequestPermissions()
@@ -95,11 +97,11 @@ class MainActivity : AppCompatActivity() {
                     }
                 })
         } else {
-            showDialogToContinue(getString(R.string.permission_to_continue))
+            switchToSettings(getString(R.string.permission_to_continue))
         }
     }
 
-    private fun showDialogForProperlyWork(message: String, okListener: DialogInterface.OnClickListener) {
+    private fun warnAboutPermissions(message: String, okListener: DialogInterface.OnClickListener) {
         AlertDialog.Builder(this)
             .setMessage(message)
             .setPositiveButton(getString(R.string.ok), okListener)
@@ -108,10 +110,17 @@ class MainActivity : AppCompatActivity() {
             .show()
     }
 
-    private fun showDialogToContinue(msg: String) {
+    private fun switchToSettings(msg: String) {
         AlertDialog.Builder(this)
             .setMessage(msg)
-            .setPositiveButton(R.string.ok) { paramDialogInterface, paramInt -> finish()}
+            .setPositiveButton(R.string.ok) {
+                    paramDialogInterface, paramInt -> startActivity(
+                    Intent(
+                        ACTION_APPLICATION_DETAILS_SETTINGS,
+                        Uri.parse("package:" + BuildConfig.APPLICATION_ID)
+                    )
+                )
+            }
             .setNegativeButton(R.string.cancel) { paramDialogInterface, paramInt -> finish() }
             .show()
     }

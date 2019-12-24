@@ -28,6 +28,7 @@ class FilterItemFragment : Fragment() {
     private var position = 1
 
     private var fileUri: Uri? = null
+    private var savedFileUri: Uri? = null
 
     private lateinit var plusImg : ImageButton
     private lateinit var filterTitle : TextView
@@ -77,7 +78,7 @@ class FilterItemFragment : Fragment() {
     private fun getResult(){
         if (plusImg.alpha == 0.0f) {
             router.navigateTo(true, ::FilterResultFragment,
-                changeStack = 1, intMessage = position, strMessage = fileUri.toString())
+                changeStack = 1, intMessage = position, strMessage = savedFileUri.toString())
         } else {
             val toast = Toast.makeText(context,
                 resources.getString(R.string.needToLoadPhoto), Toast.LENGTH_LONG)
@@ -107,6 +108,9 @@ class FilterItemFragment : Fragment() {
         startActivityForResult(pickImageIntent, AppConstants.PICK_PHOTO_REQUEST)
     }
 
+    fun saveFileUri(){
+        savedFileUri = fileUri
+    }
 
     fun loadPhoto(context: Context?, fileUri : Uri?, photo : ImageView){
         Picasso
@@ -115,7 +119,7 @@ class FilterItemFragment : Fragment() {
 
         Picasso
             .with(context)
-            .load(fileUri)
+            .load(savedFileUri)
             .into(photo)
     }
 
@@ -129,6 +133,7 @@ class FilterItemFragment : Fragment() {
             cardView.cardElevation = 0f
             cardView.setCardBackgroundColor(resources.getColor(R.color.background))
             cardView.background.alpha = 0
+            saveFileUri()
             loadPhoto(context, fileUri, photo)
         } else {
             super.onActivityResult(requestCode, resultCode, data)

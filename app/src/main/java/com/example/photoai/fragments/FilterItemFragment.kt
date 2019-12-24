@@ -29,6 +29,14 @@ class FilterItemFragment : Fragment() {
 
     private var fileUri: Uri? = null
 
+    private lateinit var plusImg : ImageButton
+    private lateinit var filterTitle : TextView
+    private lateinit var photo : ImageView
+    private lateinit var cardView : CardView
+    private lateinit var newPhotoButton : Button
+    private lateinit var chosePhotoButton : Button
+    private lateinit var resultButton : Button
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -36,26 +44,30 @@ class FilterItemFragment : Fragment() {
         router = Router(requireActivity(), R.id.fragment_container)
     }
 
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
         val view = inflater.inflate(R.layout.filter_item_layout, container, false)
 
-        val filterTitle = view.findViewById<TextView>(R.id.txt_filter_title)
+        filterTitle = view.findViewById(R.id.txt_filter_title)
         filterTitle.setText(resources.getStringArray(R.array.filter_titles)[position])
 
-        val newPhotoButton = view.findViewById<Button>(R.id.btn_take_photo)
+        plusImg = view?.findViewById(R.id.img_btn_plus)!!
+        photo = view.findViewById(R.id.img_gradient)!!
+        plusImg = view.findViewById(R.id.img_btn_plus)!!
+        cardView = view.findViewById(R.id.beautifulButton)!!
+
+        newPhotoButton = view.findViewById(R.id.btn_take_photo)
         newPhotoButton.setOnClickListener {
             makeNewPhoto()
         }
 
-        val chosePhotoButton = view.findViewById<Button>(R.id.btn_photo)
+        chosePhotoButton = view.findViewById<Button>(R.id.btn_photo)
         chosePhotoButton.setOnClickListener{
             pickPhotoFromGallery()
         }
 
-        val resultButton = view.findViewById<Button>(R.id.btn_result)
+        resultButton = view.findViewById<Button>(R.id.btn_result)
         resultButton.setOnClickListener {
             getResult()
         }
@@ -63,8 +75,7 @@ class FilterItemFragment : Fragment() {
     }
 
     private fun getResult(){
-        val plusImg = view?.findViewById<ImageButton>(R.id.img_btn_plus)
-        if (plusImg?.alpha == 0.0f) {
+        if (plusImg.alpha == 0.0f) {
             router.navigateTo(true, ::FilterResultFragment,
                 changeStack = 1, intMessage = position, strMessage = fileUri.toString())
         } else {
@@ -109,10 +120,6 @@ class FilterItemFragment : Fragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        val photo = view?.findViewById<ImageView>(R.id.img_gradient)!!
-        val plusImg = view?.findViewById<ImageButton>(R.id.img_btn_plus)!!
-        val cardView = view?.findViewById<CardView>(R.id.beautifulButton)!!
-
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == AppConstants.PICK_PHOTO_REQUEST) {
                 fileUri = data?.data

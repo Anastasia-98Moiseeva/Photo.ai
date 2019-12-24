@@ -1,6 +1,7 @@
 package com.example.photoai.fragments
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
@@ -19,7 +20,6 @@ import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import java.io.File
 import java.io.InputStream
-import android.content.Intent
 
 
 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
@@ -54,13 +54,13 @@ class FilterResultFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.result_img_layout, container, false)
 
-        filterTextView = view.findViewById<TextView>(R.id.txt_result_filter)
+        filterTextView = view.findViewById(R.id.txt_result_filter)
         filterTextView.setText(resources.getStringArray(R.array.filter_titles)[position])
-        amazingTextView = view.findViewById<TextView>(R.id.text_amazing)
-        progressBar = view.findViewById<ProgressBar>(R.id.progress_bar)
-        photo = view.findViewById<ImageView>(R.id.img_result)
+        amazingTextView = view.findViewById(R.id.text_amazing)
+        progressBar = view.findViewById(R.id.progress_bar)
+        photo = view.findViewById(R.id.img_result)
 
-        share = view.findViewById<Button>(R.id.btn_share)
+        share = view.findViewById(R.id.btn_share)
         share.setOnClickListener {
             shareResult()
         }
@@ -145,14 +145,14 @@ class FilterResultFragment : Fragment() {
         config.put(getString(R.string.cloud_name), getString(R.string.cloud_name_value))
         val cloudinary = Cloudinary(config)
         activity?.let {
-            res = cloudinary.uploader().unsignedUpload(
-                genFile(),
-                getString(R.string.preset_value), ObjectUtils.emptyMap()
-            )
+            val file = genFile()
+            res = cloudinary.uploader().unsignedUpload(file,
+                getString(R.string.preset_value), ObjectUtils.emptyMap())
+            file.delete()
         }
         url = (res?.getValue(getString(R.string.url_key))).toString()
     }
-    
+
 
     @SuppressLint("StaticFieldLeak")
     internal inner class PhotoResult : AsyncTask<Void, Void, Void>() {

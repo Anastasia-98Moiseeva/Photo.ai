@@ -10,8 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-
-
 import androidx.fragment.app.Fragment
 import com.cloudinary.Cloudinary
 import com.cloudinary.utils.ObjectUtils
@@ -21,7 +19,6 @@ import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import java.io.File
 import java.io.InputStream
-import java.util.concurrent.CyclicBarrier
 import android.content.Intent
 
 
@@ -30,12 +27,17 @@ class FilterResultFragment : Fragment() {
 
     private var url = ""
 
-    val barrier: CyclicBarrier? = CyclicBarrier(2)
-
-    private lateinit var router : Router
+    private lateinit var router: Router
 
     private var position = 1
-    private var fileUri : Uri? = null
+    private var fileUri: Uri? = null
+
+    private lateinit var amazingTextView : TextView
+    private lateinit var progressBar : ProgressBar
+    private lateinit var photo : ImageView
+    private lateinit var filterTextView : TextView
+    private lateinit var share : Button
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,47 +48,46 @@ class FilterResultFragment : Fragment() {
         router = Router(requireActivity(), R.id.fragment_container)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?): View? {
 
         val view = inflater.inflate(R.layout.result_img_layout, container, false)
 
-        val filterTextView = view.findViewById<TextView>(R.id.txt_result_filter)
+        filterTextView = view.findViewById<TextView>(R.id.txt_result_filter)
         filterTextView.setText(resources.getStringArray(R.array.filter_titles)[position])
-        val amazingTextView = view.findViewById<TextView>(R.id.text_amazing)
-        val progressBar = view.findViewById<ProgressBar>(R.id.progress_bar)
-        val photo = view.findViewById<ImageView>(R.id.img_result)
+        amazingTextView = view.findViewById<TextView>(R.id.text_amazing)
+        progressBar = view.findViewById<ProgressBar>(R.id.progress_bar)
+        photo = view.findViewById<ImageView>(R.id.img_result)
 
-        val share = view.findViewById<Button>(R.id.btn_share)
+        share = view.findViewById<Button>(R.id.btn_share)
         share.setOnClickListener {
             shareResult()
         }
 
-        sendRequest()
-
-        barrier?.await()
-        reCreateURL()
-        getResultPhoto(progressBar, filterTextView, amazingTextView, photo, share)
+        var photoResult = PhotoResult()
+        photoResult.execute()
 
         return view
     }
 
-    fun shareResult(){
+    fun shareResult() {
         val intent = Intent(Intent.ACTION_SEND)
         intent.type = "plain/text"
         intent.putExtra(Intent.EXTRA_TEXT, url)
         startActivity(Intent.createChooser(intent, getString(R.string.share)))
     }
 
-    fun reCreateURL(){
+    fun reCreateURL() {
         val urlParts = url.split(getString(R.string.upload_url_part))
         url = urlParts[0] + getString(R.string.upload_url_part) +
                 resources.getStringArray(R.array.filters)[position] +
                 "/" + urlParts[1]
     }
 
-    fun getResultPhoto(progressBar: ProgressBar, filterTextView: TextView,
-                       amazingTextView: TextView, photo: ImageView, share : Button) {
+    fun getResultPhoto(
+        progressBar: ProgressBar, filterTextView: TextView,
+        amazingTextView: TextView, photo: ImageView, share: Button) {
 
         Picasso.with(context).invalidate(url)
         Picasso.with(context)
@@ -95,8 +96,10 @@ class FilterResultFragment : Fragment() {
                 @SuppressLint("ShowToast")
                 override fun onError() {
                     progressBar.setVisibility(View.INVISIBLE)
-                    val toast = Toast.makeText(context,
-                        resources.getString(R.string.errorLoadingPhoto), Toast.LENGTH_LONG)
+                    val toast = Toast.makeText(
+                        context,
+                        resources.getString(R.string.errorLoadingPhoto), Toast.LENGTH_LONG
+                    )
                     toast.setGravity(Gravity.CENTER, 0, 0)
                     toast.show()
                 }
@@ -110,8 +113,10 @@ class FilterResultFragment : Fragment() {
             })
     }
 
-    fun setVisibility(progressBar: ProgressBar, filterTextView: TextView,
-                      amazingTextView: TextView, photo: ImageView, share : Button){
+    fun setVisibility(
+        progressBar: ProgressBar, filterTextView: TextView,
+        amazingTextView: TextView, photo: ImageView, share: Button
+    ) {
         progressBar.setVisibility(View.INVISIBLE)
         filterTextView.setVisibility(View.VISIBLE)
         amazingTextView.setVisibility(View.VISIBLE)
@@ -125,33 +130,42 @@ class FilterResultFragment : Fragment() {
         file.outputStream().use { this.copyTo(it) }
     }
 
+
     fun genFile(): File {
-        val fileInputStream : InputStream = activity?.contentResolver!!.openInputStream(this.fileUri)
+        val fileInputStream: InputStream = activity?.contentResolver!!.openInputStream(this.fileUri)
         val path = Environment.getExternalStorageDirectory()
         val file = File(path, getString(R.string.new_img_name))
         fileInputStream.toFile(file)
         return file
     }
 
-    fun sendRequest() {
-        var res : MutableMap<Any?, Any?>? = null
-        DoAsync {
-            val config = HashMap<String, String>()
-            config.put(getString(R.string.cloud_name), getString(R.string.cloud_name_value))
-            val cloudinary = Cloudinary(config)
-            activity?.let {
-                res = cloudinary.uploader().unsignedUpload(genFile(),
-                    getString(R.string.preset_value), ObjectUtils.emptyMap())
-            }
-            url = (res?.getValue(getString(R.string.url_key))).toString()
-            barrier?.await()
-        }.execute()
+    fun sendRequest(){
+        var res: MutableMap<Any?, Any?>? = null
+        val config = HashMap<String, String>()
+        config.put(getString(R.string.cloud_name), getString(R.string.cloud_name_value))
+        val cloudinary = Cloudinary(config)
+        activity?.let {
+            res = cloudinary.uploader().unsignedUpload(
+                genFile(),
+                getString(R.string.preset_value), ObjectUtils.emptyMap()
+            )
+        }
+        url = (res?.getValue(getString(R.string.url_key))).toString()
     }
+    
 
-    class DoAsync(val handler: () -> Unit) : AsyncTask<Void, Void, Void>() {
+    @SuppressLint("StaticFieldLeak")
+    internal inner class PhotoResult : AsyncTask<Void, Void, Void>() {
+
         override fun doInBackground(vararg params: Void?): Void? {
-            handler()
+            sendRequest()
             return null
+        }
+
+        override fun onPostExecute(aVoid: Void?) {
+            super.onPostExecute(aVoid)
+            reCreateURL()
+            getResultPhoto(progressBar, filterTextView, amazingTextView, photo, share)
         }
     }
 }

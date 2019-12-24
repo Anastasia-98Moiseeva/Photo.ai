@@ -115,11 +115,8 @@ class MainActivity : AppCompatActivity() {
             .setMessage(msg)
             .setPositiveButton(R.string.ok) {
                     paramDialogInterface, paramInt -> startActivity(
-                    Intent(
-                        ACTION_APPLICATION_DETAILS_SETTINGS,
-                        Uri.parse("package:" + BuildConfig.APPLICATION_ID)
-                    )
-                )
+                    Intent(ACTION_APPLICATION_DETAILS_SETTINGS,
+                        Uri.parse("package:" + BuildConfig.APPLICATION_ID)))
             }
             .setNegativeButton(R.string.cancel) { paramDialogInterface, paramInt -> finish() }
             .show()

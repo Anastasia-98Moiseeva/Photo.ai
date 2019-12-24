@@ -2,7 +2,6 @@ package com.example.photoai.fragments
 
 import android.app.Activity
 import android.content.ContentValues
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
@@ -15,10 +14,10 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import com.example.photoai.AppConstants
 import com.example.photoai.R
 import com.example.photoai.router.Router
-import com.squareup.picasso.Picasso
 
 
 class FilterItemFragment : Fragment() {
@@ -53,7 +52,7 @@ class FilterItemFragment : Fragment() {
         filterTitle = view.findViewById(R.id.txt_filter_title)
         filterTitle.setText(resources.getStringArray(R.array.filter_titles)[position])
 
-        plusImg = view?.findViewById(R.id.img_btn_plus)!!
+        plusImg = view.findViewById(R.id.img_btn_plus)!!
         photo = view.findViewById(R.id.img_gradient)!!
         plusImg = view.findViewById(R.id.img_btn_plus)!!
         cardView = view.findViewById(R.id.beautifulButton)!!
@@ -63,12 +62,12 @@ class FilterItemFragment : Fragment() {
             makeNewPhoto()
         }
 
-        chosePhotoButton = view.findViewById<Button>(R.id.btn_photo)
+        chosePhotoButton = view.findViewById(R.id.btn_photo)
         chosePhotoButton.setOnClickListener{
             pickPhotoFromGallery()
         }
 
-        resultButton = view.findViewById<Button>(R.id.btn_result)
+        resultButton = view.findViewById(R.id.btn_result)
         resultButton.setOnClickListener {
             getResult()
         }
@@ -112,13 +111,8 @@ class FilterItemFragment : Fragment() {
         savedFileUri = fileUri
     }
 
-    fun loadPhoto(context: Context?, fileUri : Uri?, photo : ImageView){
-        Picasso
-            .with(context)
-            .setLoggingEnabled(true)
-
-        Picasso
-            .with(context)
+    fun loadPhoto(){
+        Glide.with(this)
             .load(savedFileUri)
             .into(photo)
     }
@@ -134,7 +128,7 @@ class FilterItemFragment : Fragment() {
             cardView.setCardBackgroundColor(resources.getColor(R.color.background))
             cardView.background.alpha = 0
             saveFileUri()
-            loadPhoto(context, fileUri, photo)
+            loadPhoto()
         } else {
             super.onActivityResult(requestCode, resultCode, data)
         }

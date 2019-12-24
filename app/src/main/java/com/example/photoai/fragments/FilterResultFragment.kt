@@ -48,8 +48,7 @@ class FilterResultFragment : Fragment() {
         router = Router(requireActivity(), R.id.fragment_container)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
 
         val view = inflater.inflate(R.layout.result_img_layout, container, false)
@@ -58,14 +57,14 @@ class FilterResultFragment : Fragment() {
         filterTextView.setText(resources.getStringArray(R.array.filter_titles)[position])
         amazingTextView = view.findViewById(R.id.text_amazing)
         progressBar = view.findViewById(R.id.progress_bar)
-        photo = view.findViewById(R.id.img_result)
+        photo = view.findViewById(R.id.img_photo)
 
         share = view.findViewById(R.id.btn_share)
         share.setOnClickListener {
             shareResult()
         }
 
-        var photoResult = PhotoResult()
+        val photoResult = PhotoResult()
         photoResult.execute()
 
         return view
@@ -85,10 +84,7 @@ class FilterResultFragment : Fragment() {
                 "/" + urlParts[1]
     }
 
-    fun getResultPhoto(
-        progressBar: ProgressBar, filterTextView: TextView,
-        amazingTextView: TextView, photo: ImageView, share: Button) {
-
+    fun getResultPhoto() {
         Picasso.with(context).invalidate(url)
         Picasso.with(context)
             .load(url)
@@ -105,18 +101,12 @@ class FilterResultFragment : Fragment() {
                 }
 
                 override fun onSuccess() {
-                    setVisibility(
-                        progressBar, filterTextView,
-                        amazingTextView, photo, share
-                    )
+                    setVisibility()
                 }
             })
     }
 
-    fun setVisibility(
-        progressBar: ProgressBar, filterTextView: TextView,
-        amazingTextView: TextView, photo: ImageView, share: Button
-    ) {
+    fun setVisibility() {
         progressBar.setVisibility(View.INVISIBLE)
         filterTextView.setVisibility(View.VISIBLE)
         amazingTextView.setVisibility(View.VISIBLE)
@@ -165,7 +155,7 @@ class FilterResultFragment : Fragment() {
         override fun onPostExecute(aVoid: Void?) {
             super.onPostExecute(aVoid)
             reCreateURL()
-            getResultPhoto(progressBar, filterTextView, amazingTextView, photo, share)
+            getResultPhoto()
         }
     }
 }
